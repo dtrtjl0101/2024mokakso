@@ -183,3 +183,196 @@ int main(void){
 * 가장 먼저 삽입되어 가장 앞에 있는 front원소가 가장 먼저 삭제되므로 FIFO구조.
 * 저장된 원소 중에서 첫번째 원소를 front, 저장된 원소 중에서 마지막원소를 rear이라고한다.
 #### 큐의 구현
+* 초기 공백 큐의 상태는 front변수와 rear변수의 값을 -1로 설정
+* 공백확인을 위해서 front==rear인지 확인.
+* rear가 배열의 마지막 인덱스 n-1이면 포화상태.
+#### 순차자료구조를 이용해 순차 큐 구현하기
+##### queueS.h
+```c
+#pragma once
+#define Q_SIZE 4
+typedef char element;
+typedef struct{
+    element queue[Q_SIZE];
+    int front,rear;
+}QueueType;
+QueueType* createQueue(void);
+int isQueueEmpty(QueueType* Q);
+int isQueueFull(QueueType* Q);
+void enQueue(QueueType* Q,element item);
+element deQueue(queueType* Q);
+element peekQ(QueueType* Q);
+void printQ(QueueType* Q);
+```
+##### queueS.c
+```c
+#include<stdio.h>
+#include<stdlib.h>
+#include "queueS.h"
+QueueType* createQueue(void){
+    QueueType* Q;
+    Q=(QueueType*)malloc(sizeof(QueueType));
+    Q->front=-1;
+    Q->rear=-1;
+    return Q;
+}
+int isQueueEmpty(QueueType* Q){
+    if(Q->front==Q->rear){
+        printf("queue is empty:\n\t");
+        return 1;
+    }
+    else return 0;
+}
+int isQueueFull(QueueType* Q){
+    if(Q->rear=Q_SIZE-1){
+        printf("Queue is full!\n\t");
+        return 1;
+    }else return 0;
+}
+void enQueue(QueueType* Q,element item){
+    if(isQueueFull(Q))return;
+    else{
+        Q->rear++;
+        Q->queue[Q->rear]=item;
+    }
+}
+element deQueue(queueType* Q){
+    if(isQueueEmpty(Q))return;
+    else{
+        Q->front++;
+        reutnr Q->queue[Q->front];
+    }
+}
+element peekQ(QueueType* Q){
+    if(isQueueEmpty(Q))return;
+    else return Q->queue[Q->front+1];
+}
+void printQ(QueueType* Q){
+    int i;
+    printf("Queue: [");
+    for(i=Q->front+1;i<=Q->rear;i++)
+        printf("%3c",Q->queue[i]);
+    printf(" ]");
+}
+```
+##### ex.c
+```c
+#include "queueS.h"
+int main(void){
+    QueueType *Q1=createQueue();
+    element data;
+    printf("\n****순차 큐 연산 ****\n");
+    printf("\n삽입 A>>"); enqueue(Q1,'A');printQ(Q1);
+    printf("\n삽입 B>>"); enqueue(Q1,'B');printQ(Q1);
+    printf("\n삽입 C>>"); enqueue(Q1,'C');printQ(Q1);
+    data=peekQ(Q1);printf("peek item:%c\n",data);
+    printf("\n삭제>>"); data=deQueue(Q1);printQ(Q1);
+    printf("\t삭제 데이터: %c",data);
+    printf("\n삭제>>"); data=deQueue(Q1);printQ(Q1);
+    printf("\t삭제 데이터: %c",data);
+    printf("\n삭제>>"); data=deQueue(Q1);printQ(Q1);
+    printf("\t삭제 데이터: %c",data);
+    printf("\n삽입 D>>"); enqueue(Q1,'D');printQ(Q1);
+    printf("\n삽입 E>>"); enqueue(Q1,'E');printQ(Q1);
+}
+```
+#### 원형 큐의 구현
+* 순차 자료구조에서 자리 이동 작업은 오버헤드가 커서 큐의 효율성을 떨어트려 좋은방법이 아님.
+* 초기공백 상태일때 front와 rear의 값을 0으로한다.
+* 공백 상태와 포화상태를 쉽게 구분하기 위해서 자리하나를 항상 비워둔다.
+* 포화상태의 조건은 (rear+1)mod n==front
+#### 순차 자료구조를 이용해 원형 큐 구현
+##### cQueueS.h
+```c
+#pragma once
+#define cQ_SIZE 4
+typedef char element;
+typedef struct{
+    element queue[Q_SIZE];
+    int front,rear;
+}QueueType;
+QueueType* createCQueue(void);
+int isCQueueEmpty(QueueType* cQ);
+int isCQueueFull(QueueType* cQ);
+void enCQueue(QueueType* cQ,element item);
+element deCQueue(queueType* cQ);
+element peekCQ(QueueType* cQ);
+void printCQ(QueueType* cQ);
+```
+##### cQueueS.c
+```c
+#include<stdio.h>
+#include<stdlib.h>
+#include "cqueueS.h"
+QueueType* createQueue(void){
+    QueueType* cQ;
+    cQ=(QueueType*)malloc(sizeof(QueueType));
+    cQ->front=0;
+    cQ->rear=0;
+    return cQ;
+}
+int iscQueueEmpty(QueueType* cQ){
+    if(cQ->front==cQ->rear){
+        printf("Circular queue is empty:\n\t");
+        return 1;
+    }
+    else return 0;
+}
+int isCQueueFull(QueueType* cQ){
+    if(((cQ->rear+1)%cQ_SIZE)==cQ_front){
+        printf("Circular Queue is full!\n\t");
+        return 1;
+    }else return 0;
+}
+void encQueue(QueueType* cQ,element item){
+    if(isCQueueFull(cQ))return;
+    else{
+        cQ->rear=(cQ->rear+1)%cQ_SIZE;
+        Q->queue[Q->rear]=item;
+    }
+}
+element decQueue(queueType* cQ){
+    if(isCQueueEmpty(cQ))return;
+    else{
+        cQ->front=(cQ->front+1)%cQ_SIZE;
+        reutnr cQ->queue[cQ->front];
+    }
+}
+element peekCQ(QueueType* cQ){
+    if(isQueueEmpty(cQ))return;
+    else return cQ->queue[(Q->front+1)%cQ_SIZE];
+}
+void printQ(QueueType* cQ){
+    int i,first,last;
+    first=(cQ->front+1)%cQ_SIZE;
+    last=(cQ->rear+1)%cQ_SIZE;
+    printf("Circular Queue: [");
+    i=first;
+    while(i!=last){
+        printf("%3c",Q->queue[i]);
+        i=(i+1)%cQ_SIZE;
+    }
+    printf(" ]");
+}
+```
+##### ex.c
+```c
+#include "cQueueS.h"
+int main(void){
+    QueueType *cQ=createQueue();
+    element data;
+    printf("\n****원형 큐 연산 ****\n");
+    printf("\n삽입 A>>"); enCQueue(cQ,'A');printCQ(cQ);
+    printf("\n삽입 B>>"); encQueue(cQ,'B');printCQ(cQ);
+    printf("\n삽입 C>>"); enqueue(cQ,'C');printCQ(cQ);
+    data=peekQ(cQ);printf("peek item:%c\n",data);
+    printf("\n삭제>>"); data=deCQueue(cQ);printCQ(cQ);
+    printf("\t삭제 데이터: %c",data);
+    printf("\n삭제>>"); data=deCQueue(cQ);printCQ(cQ);
+    printf("\t삭제 데이터: %c",data);
+    printf("\n삭제>>"); data=deCQueue(cQ);printCQ(cQ);
+    printf("\t삭제 데이터: %c",data);
+    printf("\n삽입 D>>"); enCQueue(cQ,'D');printCQ(cQ);
+    printf("\n삽입 E>>"); enCqueue(cQ,'E');printCQ(cQ);
+}
+```
