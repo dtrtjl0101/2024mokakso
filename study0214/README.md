@@ -1,7 +1,7 @@
 # 2024mokakso
 ## 개념이용한 백준풀이
 ### 10828번 (스택)
-![](study0214/10828.PNG)
+![](https://github.com/dtrtjl0101/2024mokakso/blob/main/study0214/10828.PNG)
 ```c
 #include<stdio.h>
 #include<string.h>
