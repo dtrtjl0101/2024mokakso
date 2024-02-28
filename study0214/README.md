@@ -1,7 +1,7 @@
 # 2024mokakso
 ## 개념이용한 백준풀이
 ### 10828번 (스택)
-![](./image/10828.png)
+![](./study0214/10828.png)
 ```c
 #include<stdio.h>
 #include<string.h>
@@ -70,7 +70,7 @@ int main() {
 * 사용자로부터 입력을 받아 명령어를 처리하고, 처리된 결과를 출력한다.
 ---
 ### 10845번 (큐)
-![](./image/10845.png)
+![](./study0214/10845.png)
 ```c
 // 표준 입력 함수와 관련된 경고를 무시하기 위한 선언
 #define _CRT_SECURE_NO_WARNINGS
@@ -151,7 +151,7 @@ int main() {
 * 코드는 사용자가 입력한 명령어에 따라 적절한 처리를 수행하고, 스택의 상태를 출력한다.
 ---
 ### 11650번 (정렬)
-![](./image/11650.png)
+![](./study0214/11650.png)
 ```c
 #include <stdio.h>
 #include <stdlib.h>
